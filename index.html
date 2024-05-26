@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Responsive Layout with Ads</title>
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+        justify-content: center;
+    }
+
+    .box {
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    .ad {
+        width: 300px;
+        height: 250px;
+        background: lightblue;
+        margin: 10px;
+    }
+
+    .header {
+        width: 728px;
+        height: 90px;
+        border: 1px solid black;
+        margin: 0 auto 10px;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .center {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .click-button {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+    }
+
+    .countdown-container {
+        display: inline-block;
+        margin-left: 20px;
+        vertical-align: top;
+    }
+
+    .countdown {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+</style>
+</head>
+<body>
+<div class="header">Header Box</div>
+<div class="container">
+    <div class="ad">Ad 1</div>
+    <div class="ad">Ad 2</div>
+    <div class="ad">Ad 3</div>
+    <div class="ad">Ad 4</div>
+    <div class="ad">Ad 5</div>
+    <div class="ad">Ad 6</div>
+    <div class="ad">Ad 7</div>
+    <div class="ad">Ad 8</div>
+</div>
+
+<div class="center">
+    <button class="click-button" onclick="openLinks()">Click Here</button>
+    <div class="countdown-container">
+        <div id="countdown" class="countdown"></div>
+        <div id="errorMessage" style="color: red;"></div>
+    </div>
+</div>
+
+<script>
+    function openLinks() {
+        const adsterraWindow = window.open('https://www.adsterra.com', 'adsterraWindow', 'width=800,height=600');
+
+        if (!adsterraWindow) {
+            document.getElementById('errorMessage').textContent = "Could not open the Adsterra window. Please ensure pop-up blocking is disabled.";
+            return;
+        }
+
+        let countdown = 20;
+        const countdownDisplay = document.getElementById('countdown');
+
+        const interval = setInterval(function() {
+            if (adsterraWindow.closed) {
+                clearInterval(interval);
+                countdownDisplay.textContent = "The Adsterra window was closed. Countdown stopped.";
+                return;
+            }
+
+            countdown--;
+
+            countdownDisplay.textContent = `Opening second link in ${countdown} seconds...`;
+
+            if (countdown <= 0) {
+                try {
+                    const secondWindow = window.open('https://www.example.com/second-link', 'secondWindow', 'width=800,height=600');
+                    if (!secondWindow) {
+                        document.getElementById('errorMessage').textContent = "Could not open the second window. Check pop-up blockers.";
+                    } else {
+                        countdownDisplay.textContent = "Second link opened.";
+                    }
+                } catch (e) {
+                    console.error("Error while opening the second window:", e);
+                }
+
+                clearInterval(interval);
+            }
+        }, 1000);
+    }
+</script>
+<!-- Blog Post Code Pasty -->
+</body>
+</html>
